@@ -1,358 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arquitectura de Software — TSW</title>
-  <script src="auth.js"></script>
-  <script>
-    // Bloquear acceso si no hay sesión
-    (function() {
-      const s = sessionStorage.getItem("cloud_gallery_session");
-      if (!s) window.location.href = "login.html";
-    })();
-  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Materia</title>
   <style>
-    :root {
-      --bg: #0b0c10;
-      --surface: #13151c;
-      --card: #1a1d28;
-      --border: #2a2d3e;
-      --accent: #7c6af7;
-      --accent2: #46c8a0;
-      --text: #e8e9f0;
-      --muted: #6b6f8a;
-      --danger: #f06060;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: system-ui, -apple-system, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-    }
-
-    /* ── Header ── */
-    header {
-      padding: 1.25rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .logo-icon {
-      width: 38px;
-      height: 38px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
       justify-content: center;
-      font-size: 20px;
-    }
-
-    .logo h1 {
-      font-family: Georgia, serif;
-      font-size: 1.3rem;
-      font-weight: 400;
-      letter-spacing: -0.02em;
-    }
-
-    .logo span {
-      font-family: 'Courier New', monospace;
-      font-size: 0.72rem;
-      color: var(--accent2);
-      display: block;
-      margin-top: -2px;
-    }
-
-    .user-controls {
-      display: flex;
       align-items: center;
-      gap: 0.75rem;
-    }
-
-    /* ── Main Layout ── */
-    main {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem;
-      flex: 1;
-    }
-
-    /* ── Hero Section ── */
-    .hero {
       text-align: center;
-      padding: 2rem 1rem 3rem;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 3rem;
+      padding: 1rem;
     }
 
-    .hero-badge {
-      display: inline-block;
-      font-family: 'Courier New', monospace;
-      font-size: 0.8rem;
-      color: var(--accent2);
-      background: rgba(70, 200, 160, 0.1);
-      border: 1px solid rgba(70, 200, 160, 0.25);
-      padding: 0.35rem 1rem;
-      border-radius: 999px;
-      margin-bottom: 1.25rem;
+    h1 {
+      font-size: clamp(2rem, 8vw, 4.5rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.1;
     }
-
-    .hero h2 {
-      font-family: Georgia, serif;
-      font-size: 2.5rem;
-      font-weight: 400;
-      line-height: 1.2;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, #fff 40%, var(--muted));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      color: var(--muted);
-      font-size: 1.05rem;
-      max-width: 680px;
-      margin: 0 auto 2rem;
-      line-height: 1.6;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-    }
-
-    .btn {
-      padding: 0.7rem 1.5rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-    }
-
-    .btn-primary:hover {
-      opacity: 0.9;
-      transform: translateY(-2px);
-    }
-
-    .btn-secondary {
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--accent);
-      transform: translateY(-2px);
-    }
-
-    /* ── Content Grid ── */
-    .section-title {
-      font-family: Georgia, serif;
-      font-size: 1.5rem;
-      font-weight: 400;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .modules-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.25rem;
-      margin-bottom: 3.5rem;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.5rem;
-      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-      border-color: var(--accent);
-      box-shadow: 0 8px 32px rgba(124, 106, 247, 0.12);
-    }
-
-    .card-icon {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-    }
-
-    .card h3 {
-      font-size: 1.1rem;
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-    }
-
-    .card p {
-      color: var(--muted);
-      font-size: 0.88rem;
-      line-height: 1.5;
-    }
-
-    /* ── Tech Stack / Tools ── */
-    .tech-stack {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2rem;
-      margin-bottom: 3.5rem;
-    }
-
-    .tech-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-top: 1rem;
-    }
-
-    .tech-tag {
-      background: var(--card);
-      border: 1px solid var(--border);
-      color: var(--accent2);
-      padding: 0.4rem 0.85rem;
-      border-radius: 8px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.82rem;
-    }
-
-    /* ── Footer ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 1.5rem 2rem;
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--muted);
-      font-family: 'Courier New', monospace;
-      background: var(--surface);
-    }
-
-    footer a { color: var(--accent2); text-decoration: none; }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <div class="logo-icon">🏛️</div>
-    <div>
-      <h1>Arquitectura de Software</h1>
-      <span>TSW · Tecnologías del Software</span>
-    </div>
-  </div>
+  <h1>Nombre de la Materia</h1>
 
-  <div class="user-controls">
-    <span id="userBadge" style="font-family:'Courier New',monospace;font-size:0.75rem;color:var(--accent2);background:rgba(70,200,160,0.1);border:1px solid rgba(70,200,160,0.25);padding:0.3rem 0.75rem;border-radius:999px;"></span>
-    <button onclick="logout()" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.3rem 0.75rem;border-radius:999px;font-size:0.8rem;cursor:pointer;">Salir ↩</button>
-  </div>
-</header>
-
-<main>
-  <!-- Hero Section -->
-  <section class="hero">
-    <span class="hero-badge">Bienvenido al Curso · Ciclo Académico</span>
-    <h2>Diseña sistemas escalables, mantenibles y eficientes</h2>
-    <p>
-      Explora los patrones de diseño, atributos de calidad, arquitecturas distribuidas 
-      y despliegues en la nube necesarios para construir software robusto a nivel profesional.
-    </p>
-    <div class="hero-actions">
-      <a href="#modulos" class="btn btn-primary">Ver Temario 👇</a>
-      <a href="https://github.com" target="_blank" class="btn btn-secondary">Repositorio Base 🔗</a>
-    </div>
-  </section>
-
-  <!-- Módulos -->
-  <h2 class="section-title" id="modulos">📚 Módulos del Curso</h2>
-  <section class="modules-grid">
-    <div class="card">
-      <div class="card-icon">📐</div>
-      <h3>1. Fundamentos y Estilos</h3>
-      <p>Patrones arquitectónicos: Monolitos, Capas, Microservicios, MVC y Event-Driven Architecture.</p>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">⚙️</div>
-      <h3>2. Atributos de Calidad</h3>
-      <p>Escalabilidad, disponibilidad, rendimiento, mantenibilidad y seguridad del sistema.</p>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">☁️</div>
-      <h3>3. Cloud & DevOps</h3>
-      <p>Contenedores con Docker, integración continua (CI/CD) y despliegue en plataformas Cloud.</p>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">🛡️</div>
-      <h3>4. APIs y Microservicios</h3>
-      <p>Diseño de APIs RESTful, autenticación (JWT/OAuth), API Gateways y comunicación asíncrona.</p>
-    </div>
-  </section>
-
-  <!-- Tecnologías -->
-  <section class="tech-stack">
-    <h2 class="section-title" style="margin-bottom:0.5rem;">🛠️ Tecnologías & Herramientas</h2>
-    <p style="color:var(--muted); font-size:0.9rem;">Stack tecnológico que utilizaremos a lo largo de las prácticas del curso:</p>
-    <div class="tech-tags">
-      <span class="tech-tag">Node.js / Express</span>
-      <span class="tech-tag">Docker</span>
-      <span class="tech-tag">GitHub Actions</span>
-      <span class="tech-tag">Nginx</span>
-      <span class="tech-tag">REST APIs</span>
-      <span class="tech-tag">PostgreSQL / MongoDB</span>
-      <span class="tech-tag">AWS / Cloud Services</span>
-    </div>
-  </section>
-</main>
-
-<footer>
-  TSW · Curso de Arquitectura de Software · Desplegado con GitHub Actions 🚀
-</footer>
-
-<script>
-  // Mostrar usuario activo desde la sesión
-  const session = getSession();
-  if (session) {
-    const badge = document.getElementById("userBadge");
-    if (badge) {
-      badge.textContent = session.role === "admin" ? "👑 " + session.name : "👤 " + session.name;
-    }
-  }
-</script>
 </body>
 </html>

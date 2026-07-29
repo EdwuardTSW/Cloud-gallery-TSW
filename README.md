@@ -113,7 +113,7 @@ Reemplaza el job `deploy` con el action correspondiente del proveedor.
 
 | Nombre | Rol |
 |--------|-----|
-| — | Agrega tu nombre aquí |
+| — | Prueba de CI/CD realizada por Edwuard Chay. |
 
 ---
 

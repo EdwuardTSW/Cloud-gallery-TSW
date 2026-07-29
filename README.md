@@ -116,5 +116,5 @@ Reemplaza el job `deploy` con el action correspondiente del proveedor.
 | — | Prueba de CI/CD realizada por Edwuard Chay. |
 
 ---
-
+Pipeline activado correctamente.
 *Materia: Cómputo en la Nube · UPP · Enero–Junio 2025*

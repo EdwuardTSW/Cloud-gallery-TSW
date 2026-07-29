@@ -1,40 +1,123 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Materia</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ariscend Focus</title>
+  <script src="auth.js"></script>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; }
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: #0f172a;
-      color: #f8fafc;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 1rem;
+      margin: 0; min-height: 100vh; font-family: Arial, sans-serif;
+      background: #080808; color: #f6f3ed;
     }
-
-    h1 {
-      font-size: clamp(2rem, 8vw, 4.5rem);
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      line-height: 1.1;
+    .app { max-width: 1000px; margin: auto; padding: 32px 20px; }
+    nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 45px; }
+    .logo { font-size: 22px; font-weight: 800; letter-spacing: 2px; }
+    .logo span { color: #b59a60; }
+    button {
+      border: 0; border-radius: 10px; padding: 11px 15px; cursor: pointer;
+      background: #b59a60; color: #111; font-weight: bold;
+    }
+    .hero { margin-bottom: 30px; }
+    .hero p { color: #aaa; max-width: 540px; line-height: 1.5; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .card {
+      background: #141414; border: 1px solid #292929; border-radius: 16px; padding: 22px;
+    }
+    .card h3 { margin-top: 0; }
+    .number { color: #b59a60; font-size: 34px; font-weight: bold; margin: 12px 0; }
+    .habits { grid-column: span 2; }
+    .habit {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 0; border-bottom: 1px solid #2a2a2a;
+    }
+    .habit:last-child { border: 0; }
+    .check {
+      width: 22px; height: 22px; accent-color: #b59a60; cursor: pointer;
+    }
+    .progress { height: 11px; background: #2a2a2a; border-radius: 10px; overflow: hidden; }
+    #bar { height: 100%; width: 0%; background: #b59a60; transition: .3s; }
+    .quote { color: #b59a60; font-style: italic; line-height: 1.5; }
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+      .habits { grid-column: span 1; }
     }
   </style>
 </head>
 <body>
+  <main class="app">
+    <nav>
+      <div class="logo">ARIS<span>CEND</span></div>
+      <button onclick="logout()">Cerrar sesión</button>
+    </nav>
 
-  <h1>Arquitectura de Software</h1>
-  <p>Pruebas de despliegue</p>
+    <section class="hero">
+      <h1>Construye la versión de ti que respetas.</h1>
+      <p>Pequeñas acciones repetidas todos los días crean disciplina, enfoque y progreso real.</p>
+    </section>
 
+    <section class="grid">
+      <article class="card">
+        <h3>Racha actual</h3>
+        <div class="number">7 días</div>
+        <p>Tu consistencia está creciendo.</p>
+      </article>
+
+      <article class="card">
+        <h3>Meta semanal</h3>
+        <div class="number" id="percent">0%</div>
+        <div class="progress"><div id="bar"></div></div>
+        <p id="progressText">Completa tus hábitos de hoy.</p>
+      </article>
+
+      <article class="card habits">
+        <h3>Hábitos de hoy</h3>
+
+        <div class="habit">
+          <span>Entrenar 45 minutos</span>
+          <input class="check" type="checkbox" onchange="updateProgress()" />
+        </div>
+        <div class="habit">
+          <span>Estudiar desarrollo de software</span>
+          <input class="check" type="checkbox" onchange="updateProgress()" />
+        </div>
+        <div class="habit">
+          <span>Leer 20 minutos</span>
+          <input class="check" type="checkbox" onchange="updateProgress()" />
+        </div>
+        <div class="habit">
+          <span>Sin distracciones por 2 horas</span>
+          <input class="check" type="checkbox" onchange="updateProgress()" />
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Recordatorio</h3>
+        <p class="quote">“No necesitas motivación todos los días. Necesitas disciplina.”</p>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    function updateProgress() {
+      const checks = document.querySelectorAll(".check");
+      const done = [...checks].filter(c => c.checked).length;
+      const percent = Math.round((done / checks.length) * 100);
+
+      document.getElementById("percent").textContent = percent + "%";
+      document.getElementById("bar").style.width = percent + "%";
+      document.getElementById("progressText").textContent =
+        done + " de " + checks.length + " hábitos completados.";
+
+      localStorage.setItem("ariscendHabits", JSON.stringify([...checks].map(c => c.checked)));
+    }
+
+    const saved = JSON.parse(localStorage.getItem("ariscendHabits") || "[]");
+    document.querySelectorAll(".check").forEach((check, index) => {
+      check.checked = saved[index] || false;
+    });
+    updateProgress();
+  </script>
 </body>
 </html>

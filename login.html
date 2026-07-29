@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Cloud Gallery</title>
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --surface: #13151c;
+      --card: #1a1d28;
+      --border: #2a2d3e;
+      --accent: #7c6af7;
+      --accent2: #46c8a0;
+      --text: #e8e9f0;
+      --muted: #6b6f8a;
+      --danger: #f06060;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .login-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+      animation: fadeUp 0.4s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .logo h1 {
+      font-family: Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+    }
+
+    .logo span {
+      font-family: 'Courier New', monospace;
+      font-size: 0.7rem;
+      color: var(--accent2);
+      display: block;
+    }
+
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .field {
+      margin-bottom: 1.1rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+      font-family: 'Courier New', monospace;
+    }
+
+    input {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus { border-color: var(--accent); }
+
+    .btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent), #6254e0);
+      border: none;
+      border-radius: 10px;
+      padding: 0.85rem;
+      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn:active { transform: none; }
+
+    .error-msg {
+      display: none;
+      background: rgba(240,96,96,0.1);
+      border: 1px solid rgba(240,96,96,0.3);
+      border-radius: 8px;
+      padding: 0.65rem 1rem;
+      font-size: 0.85rem;
+      color: var(--danger);
+      margin-bottom: 1rem;
+    }
+
+    .error-msg.show { display: block; }
+
+    .demo-hint {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .demo-hint p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: 'Courier New', monospace;
+      margin-bottom: 0.5rem;
+    }
+
+    .demo-users {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .demo-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.75rem;
+      font-family: 'Courier New', monospace;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      flex: 1;
+      text-align: center;
+    }
+
+    .demo-chip:hover { border-color: var(--accent2); color: var(--accent2); }
+    .demo-chip span { display: block; color: var(--muted); font-size: 0.7rem; }
+  </style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="logo">
+    <div class="logo-icon">☁️</div>
+    <div>
+      <h1>Cloud Gallery</h1>
+      <span>UPP · Cómputo en la Nube</span>
+    </div>
+  </div>
+
+  <h2>Iniciar sesión</h2>
+  <p class="subtitle">Ingresa tus credenciales para acceder a la galería.</p>
+
+  <div class="error-msg" id="errorMsg">Usuario o contraseña incorrectos.</div>
+
+  <div class="field">
+    <label>Usuario</label>
+    <input type="text" id="username" placeholder="tu usuario" autocomplete="username" />
+  </div>
+
+  <div class="field">
+    <label>Contraseña</label>
+    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
+  </div>
+
+  <button class="btn" id="loginBtn">Entrar →</button>
+
+  <div class="demo-hint">
+    <p>// usuarios de demo — clic para autocompletar</p>
+    <div class="demo-users">
+      <div class="demo-chip" onclick="fillDemo('admin','upp2025')">
+        admin <span>upp2025</span>
+      </div>
+      <div class="demo-chip" onclick="fillDemo('viewer','nube123')">
+        viewer <span>nube123</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="auth.js"></script>
+<script>
+  // Si ya está logueado, redirige directo
+  if (getSession()) window.location.href = "index.html";
+
+  function fillDemo(user, pass) {
+    document.getElementById('username').value = user;
+    document.getElementById('password').value = pass;
+    document.getElementById('username').focus();
+  }
+
+  function doLogin() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const errorMsg = document.getElementById('errorMsg');
+
+    if (!username || !password) {
+      errorMsg.textContent = "Completa todos los campos.";
+      errorMsg.classList.add('show');
+      return;
+    }
+
+    if (login(username, password)) {
+      window.location.href = "index.html";
+    } else {
+      errorMsg.textContent = "Usuario o contraseña incorrectos.";
+      errorMsg.classList.add('show');
+      document.getElementById('password').value = '';
+    }
+  }
+
+  document.getElementById('loginBtn').addEventListener('click', doLogin);
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+</script>
+</body>
+</html>

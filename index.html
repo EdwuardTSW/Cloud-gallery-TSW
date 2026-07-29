@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cloud Gallery — TSW Cómputo en la Nube</title>
+  <title>Arquitectura de Software — TSW</title>
   <script src="auth.js"></script>
   <script>
     // Bloquear acceso si no hay sesión
@@ -32,11 +32,13 @@
       color: var(--text);
       font-family: system-ui, -apple-system, sans-serif;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     /* ── Header ── */
     header {
-      padding: 1.5rem 2rem;
+      padding: 1.25rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -54,325 +56,199 @@
     }
 
     .logo-icon {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 20px;
     }
 
     .logo h1 {
       font-family: Georgia, serif;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 400;
       letter-spacing: -0.02em;
     }
 
     .logo span {
       font-family: 'Courier New', monospace;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: var(--accent2);
       display: block;
       margin-top: -2px;
     }
 
-    nav {
+    .user-controls {
       display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* ── Main Layout ── */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+      flex: 1;
+    }
+
+    /* ── Hero Section ── */
+    .hero {
+      text-align: center;
+      padding: 2rem 1rem 3rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 3rem;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      color: var(--accent2);
+      background: rgba(70, 200, 160, 0.1);
+      border: 1px solid rgba(70, 200, 160, 0.25);
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h2 {
+      font-family: Georgia, serif;
+      font-size: 2.5rem;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #fff 40%, var(--muted));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 680px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
       gap: 0.5rem;
     }
 
-    .tag-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 0.35rem 0.9rem;
-      border-radius: 999px;
-      font-family: system-ui, -apple-system, sans-serif;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .tag-btn:hover, .tag-btn.active {
+    .btn-primary {
       background: var(--accent);
-      border-color: var(--accent);
       color: #fff;
+      border: none;
     }
 
-    /* ── Upload zone ── */
-    .upload-zone {
-      margin: 2rem auto;
-      max-width: 960px;
-      padding: 0 1.5rem;
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
     }
 
-    .drop-area {
-      border: 2px dashed var(--border);
-      border-radius: 16px;
-      padding: 2.5rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.25s;
+    .btn-secondary {
       background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
     }
 
-    .drop-area:hover, .drop-area.dragover {
+    .btn-secondary:hover {
       border-color: var(--accent);
-      background: rgba(124, 106, 247, 0.06);
+      transform: translateY(-2px);
     }
 
-    .drop-area .icon {
-      font-size: 2.5rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .drop-area p {
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
-
-    .drop-area p strong {
-      color: var(--accent);
-    }
-
-    #fileInput { display: none; }
-
-    /* ── Stats bar ── */
-    .stats-bar {
-      max-width: 960px;
-      margin: 0 auto 1.5rem;
-      padding: 0 1.5rem;
+    /* ── Content Grid ── */
+    .section-title {
+      font-family: Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 0.5rem;
     }
 
-    .stats-bar p {
-      font-size: 0.82rem;
-      color: var(--muted);
-      font-family: 'Courier New', monospace;
-    }
-
-    .stats-bar p span {
-      color: var(--accent2);
-      font-weight: 500;
-    }
-
-    .view-toggle {
-      display: flex;
-      gap: 4px;
-      background: var(--card);
-      border-radius: 8px;
-      padding: 3px;
-      border: 1px solid var(--border);
-    }
-
-    .view-btn {
-      background: none;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 1rem;
-      transition: all 0.15s;
-    }
-
-    .view-btn.active {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    /* ── Gallery Grid ── */
-    .gallery {
-      max-width: 960px;
-      margin: 0 auto 3rem;
-      padding: 0 1.5rem;
+    .modules-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 1rem;
-      transition: all 0.3s;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 3.5rem;
     }
 
-    .gallery.list-view {
-      grid-template-columns: 1fr;
-    }
-
-    /* ── Card ── */
-    .img-card {
+    .card {
       background: var(--card);
-      border-radius: 14px;
       border: 1px solid var(--border);
-      overflow: hidden;
-      cursor: pointer;
+      border-radius: 14px;
+      padding: 1.5rem;
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-      animation: cardIn 0.35s ease both;
     }
 
-    @keyframes cardIn {
-      from { opacity: 0; transform: translateY(12px) scale(0.97); }
-      to   { opacity: 1; transform: none; }
-    }
-
-    .img-card:hover {
+    .card:hover {
       transform: translateY(-3px);
       border-color: var(--accent);
-      box-shadow: 0 8px 32px rgba(124, 106, 247, 0.15);
+      box-shadow: 0 8px 32px rgba(124, 106, 247, 0.12);
     }
 
-    .img-card .thumb {
-      width: 100%;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-      display: block;
-      background: var(--surface);
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
     }
 
-    .img-card .thumb-placeholder {
-      width: 100%;
-      aspect-ratio: 4/3;
-      background: linear-gradient(135deg, var(--surface) 0%, #1e2035 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-    }
-
-    .img-card .card-body {
-      padding: 0.85rem 1rem;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 0.5rem;
-    }
-
-    .img-card .card-info h3 {
-      font-size: 0.88rem;
+    .card h3 {
+      font-size: 1.1rem;
       font-weight: 500;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 180px;
+      margin-bottom: 0.5rem;
     }
 
-    .img-card .card-info p {
-      font-size: 0.75rem;
+    .card p {
       color: var(--muted);
-      font-family: 'Courier New', monospace;
-      margin-top: 2px;
+      font-size: 0.88rem;
+      line-height: 1.5;
     }
 
-    .img-card .delete-btn {
-      background: none;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 1rem;
-      padding: 2px 4px;
-      border-radius: 4px;
-      transition: all 0.15s;
-      line-height: 1;
-      flex-shrink: 0;
-    }
-
-    .img-card .delete-btn:hover { color: var(--danger); background: rgba(240,96,96,0.1); }
-
-    /* List view card */
-    .gallery.list-view .img-card {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .gallery.list-view .img-card .thumb,
-    .gallery.list-view .img-card .thumb-placeholder {
-      width: 100px;
-      aspect-ratio: 4/3;
-      flex-shrink: 0;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .gallery.list-view .img-card .card-body {
-      flex: 1;
-      padding: 0.75rem 1rem 0.75rem 0;
-    }
-
-    .gallery.list-view .img-card .card-info h3 {
-      max-width: none;
-    }
-
-    /* ── Empty state ── */
-    .empty-state {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem;
-      text-align: center;
-    }
-
-    .empty-state .big-icon { font-size: 4rem; margin-bottom: 1rem; }
-    .empty-state h2 { font-family: Georgia, serif; font-size: 1.8rem; font-weight: 400; margin-bottom: 0.5rem; }
-    .empty-state p { color: var(--muted); font-size: 0.9rem; }
-
-    /* ── Lightbox ── */
-    .lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
+    /* ── Tech Stack / Tools ── */
+    .tech-stack {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
       padding: 2rem;
-      backdrop-filter: blur(6px);
+      margin-bottom: 3.5rem;
     }
 
-    .lightbox.open { display: flex; }
-
-    .lightbox img {
-      max-width: 90vw;
-      max-height: 85vh;
-      border-radius: 12px;
-      object-fit: contain;
-      box-shadow: 0 20px 80px rgba(0,0,0,0.6);
-    }
-
-    .lightbox-close {
-      position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      color: var(--text);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      font-size: 1.2rem;
-      cursor: pointer;
+    .tech-tags {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1rem;
     }
 
-    .lightbox-info {
-      position: fixed;
-      bottom: 1.5rem;
-      left: 50%;
-      transform: translateX(-50%);
+    .tech-tag {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 0.75rem 1.25rem;
-      font-size: 0.85rem;
-      color: var(--muted);
+      color: var(--accent2);
+      padding: 0.4rem 0.85rem;
+      border-radius: 8px;
       font-family: 'Courier New', monospace;
-      text-align: center;
+      font-size: 0.82rem;
     }
-
-    .lightbox-info strong { color: var(--text); display: block; font-family: system-ui, -apple-system, sans-serif; margin-bottom: 2px; }
 
     /* ── Footer ── */
     footer {
@@ -382,6 +258,7 @@
       font-size: 0.78rem;
       color: var(--muted);
       font-family: 'Courier New', monospace;
+      background: var(--surface);
     }
 
     footer a { color: var(--accent2); text-decoration: none; }
@@ -391,233 +268,90 @@
 
 <header>
   <div class="logo">
-    <div class="logo-icon">☁️</div>
+    <div class="logo-icon">🏛️</div>
     <div>
-      <h1>Cloud Gallery</h1>
-      <span>TSW · Arquitectura de Software.</span>
+      <h1>Arquitectura de Software</h1>
+      <span>TSW · Tecnologías del Software</span>
     </div>
   </div>
-  <nav id="tagNav">
-    <button class="tag-btn active" data-tag="all">Todas</button>
-  </nav>
-  <div style="display:flex;align-items:center;gap:0.75rem;margin-left:1rem;">
-    <span id="userBadge" style="font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--accent2);background:rgba(70,200,160,0.1);border:1px solid rgba(70,200,160,0.25);padding:0.3rem 0.75rem;border-radius:999px;"></span>
-    <button onclick="logout()" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.3rem 0.75rem;border-radius:999px;font-family:'Outfit',sans-serif;font-size:0.8rem;cursor:pointer;">Salir ↩</button>
+
+  <div class="user-controls">
+    <span id="userBadge" style="font-family:'Courier New',monospace;font-size:0.75rem;color:var(--accent2);background:rgba(70,200,160,0.1);border:1px solid rgba(70,200,160,0.25);padding:0.3rem 0.75rem;border-radius:999px;"></span>
+    <button onclick="logout()" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:0.3rem 0.75rem;border-radius:999px;font-size:0.8rem;cursor:pointer;">Salir ↩</button>
   </div>
 </header>
 
-<div class="upload-zone">
-  <div class="drop-area" id="dropArea">
-    <div class="icon">📤</div>
-    <p>Arrastra imágenes aquí o <strong>haz clic para seleccionar</strong></p>
-    <p style="margin-top:6px; font-size:0.78rem;">JPG, PNG, GIF, WEBP · Máx. 10 MB por imagen</p>
-    <input type="file" id="fileInput" accept="image/*" multiple />
-  </div>
-</div>
+<main>
+  <!-- Hero Section -->
+  <section class="hero">
+    <span class="hero-badge">Bienvenido al Curso · Ciclo Académico</span>
+    <h2>Diseña sistemas escalables, mantenibles y eficientes</h2>
+    <p>
+      Explora los patrones de diseño, atributos de calidad, arquitecturas distribuidas 
+      y despliegues en la nube necesarios para construir software robusto a nivel profesional.
+    </p>
+    <div class="hero-actions">
+      <a href="#modulos" class="btn btn-primary">Ver Temario 👇</a>
+      <a href="https://github.com" target="_blank" class="btn btn-secondary">Repositorio Base 🔗</a>
+    </div>
+  </section>
 
-<div class="stats-bar">
-  <p id="statsText"><span id="imgCount">0</span> imágenes en tu galería</p>
-  <div class="view-toggle">
-    <button class="view-btn active" id="gridBtn" title="Vista cuadrícula">⊞</button>
-    <button class="view-btn" id="listBtn" title="Vista lista">☰</button>
-  </div>
-</div>
+  <!-- Módulos del Curso -->
+  <h2 class="section-title" id="modulos">📚 Módulos del Curso</h2>
+  <section class="modules-grid">
+    <div class="card">
+      <div class="card-icon">📐</div>
+      <h3>1. Fundamentos y Estilos</h3>
+      <p>Patrones arquitectónicos: Monolitos, Capas, Microservicios, MVC y Event-Driven Architecture.</p>
+    </div>
 
-<div class="gallery" id="gallery"></div>
-<div class="empty-state" id="emptyState">
-  <div class="big-icon">🖼️</div>
-  <h2>Tu galería está vacía</h2>
-  <p>Sube tus primeras imágenes usando la zona de arriba.<br/>Soporta múltiples archivos a la vez.</p>
-</div>
+    <div class="card">
+      <div class="card-icon">⚙️</div>
+      <h3>2. Atributos de Calidad</h3>
+      <p>Escalabilidad, disponibilidad, rendimiento, mantenibilidad y seguridad del sistema.</p>
+    </div>
 
-<div class="lightbox" id="lightbox">
-  <button class="lightbox-close" id="lbClose">✕</button>
-  <img id="lbImg" src="" alt="" />
-  <div class="lightbox-info">
-    <strong id="lbName"></strong>
-    <span id="lbMeta"></span>
-  </div>
-</div>
+    <div class="card">
+      <div class="card-icon">☁️</div>
+      <h3>3. Cloud & DevOps</h3>
+      <p>Contenedores con Docker, integración continua (CI/CD) y despliegue en plataformas Cloud.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <h3>4. APIs y Microservicios</h3>
+      <p>Diseño de APIs RESTful, autenticación (JWT/OAuth), API Gateways y comunicación asíncrona.</p>
+    </div>
+  </section>
+
+  <!-- Tecnologías -->
+  <section class="tech-stack">
+    <h2 class="section-title" style="margin-bottom:0.5rem;">🛠️ Tecnologías & Herramientas</h2>
+    <p style="color:var(--muted); font-size:0.9rem;">Stack tecnológico que utilizaremos a lo largo de las prácticas del curso:</p>
+    <div class="tech-tags">
+      <span class="tech-tag">Node.js / Express</span>
+      <span class="tech-tag">Docker</span>
+      <span class="tech-tag">GitHub Actions</span>
+      <span class="tech-tag">Nginx</span>
+      <span class="tech-tag">REST APIs</span>
+      <span class="tech-tag">PostgreSQL / MongoDB</span>
+      <span class="tech-tag">AWS / Cloud Services</span>
+    </div>
+  </section>
+</main>
 
 <footer>
-  Proyecto demo · <a href="https://github.com" target="_blank">Ver en GitHub</a> · Desplegado con GitHub Actions 🚀
+  TSW · Curso de Arquitectura de Software · Desplegado con GitHub Actions 🚀
 </footer>
 
 <script>
-  const gallery    = document.getElementById('gallery');
-  const emptyState = document.getElementById('emptyState');
-  const dropArea   = document.getElementById('dropArea');
-  const fileInput  = document.getElementById('fileInput');
-  const imgCount   = document.getElementById('imgCount');
-  const lightbox   = document.getElementById('lightbox');
-  const lbImg      = document.getElementById('lbImg');
-  const lbName     = document.getElementById('lbName');
-  const lbMeta     = document.getElementById('lbMeta');
-  const tagNav     = document.getElementById('tagNav');
-
-  let images = [];
-  let activeTag = 'all';
-  let isListView = false;
-
-  // ── Cargar imágenes desde S3 via API ─────────────────────────────────────
-  async function loadImages() {
-    try {
-      const res = await fetch('/api/images');
-      images = await res.json();
-      renderGallery();
-    } catch (err) {
-      console.error('Error cargando imágenes:', err);
-    }
-  }
-
-  function formatSize(bytes) {
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
-    return (bytes/1048576).toFixed(1) + ' MB';
-  }
-
-  function inferTag(name) {
-    const ext = name.split('.').pop().toLowerCase();
-    if (['jpg','jpeg'].includes(ext)) return 'JPEG';
-    if (ext === 'png') return 'PNG';
-    if (ext === 'gif') return 'GIF';
-    if (ext === 'webp') return 'WebP';
-    return 'IMG';
-  }
-
-  function updateTagNav() {
-    const tags = ['all', ...new Set(images.map(i => i.tag))];
-    tagNav.innerHTML = tags.map(t => `
-      <button class="tag-btn ${t === activeTag ? 'active' : ''}" data-tag="${t}">
-        ${t === 'all' ? 'Todas' : t}
-      </button>
-    `).join('');
-    tagNav.querySelectorAll('.tag-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        activeTag = btn.dataset.tag;
-        renderGallery();
-      });
-    });
-  }
-
-  function renderGallery() {
-    const filtered = activeTag === 'all' ? images : images.filter(i => i.tag === activeTag);
-    imgCount.textContent = images.length;
-
-    if (filtered.length === 0) {
-      gallery.innerHTML = '';
-      emptyState.style.display = 'block';
-      updateTagNav();
-      return;
-    }
-    emptyState.style.display = 'none';
-    updateTagNav();
-
-    gallery.innerHTML = filtered.map((img, idx) => `
-      <div class="img-card" data-idx="${images.indexOf(img)}">
-        ${img.url
-          ? `<img class="thumb" src="${img.url}" alt="${img.name}" loading="lazy" />`
-          : `<div class="thumb-placeholder">🖼️</div>`}
-        <div class="card-body">
-          <div class="card-info">
-            <h3>${img.name}</h3>
-            <p>${formatSize(img.size)} · ${img.tag} · ${img.date}</p>
-          </div>
-          <button class="delete-btn" data-idx="${images.indexOf(img)}" title="Eliminar">🗑</button>
-        </div>
-      </div>
-    `).join('');
-
-    gallery.querySelectorAll('.img-card').forEach(card => {
-      card.addEventListener('click', e => {
-        if (e.target.classList.contains('delete-btn')) return;
-        const idx = card.dataset.idx;
-        openLightbox(images[idx]);
-      });
-    });
-
-    gallery.querySelectorAll('.delete-btn').forEach(btn => {
-      btn.addEventListener('click', async e => {
-        e.stopPropagation();
-        const idx = parseInt(btn.dataset.idx);
-        const img = images[idx];
-        try {
-          await fetch('/api/images', {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ key: img.key })
-          });
-          await loadImages();
-        } catch (err) {
-          console.error('Error eliminando:', err);
-        }
-      });
-    });
-  }
-
-  function openLightbox(img) {
-    lbImg.src = img.url;
-    lbName.textContent = img.name;
-    lbMeta.textContent = `${formatSize(img.size)} · ${img.tag} · Subida el ${img.date}`;
-    lightbox.classList.add('open');
-  }
-
-  document.getElementById('lbClose').addEventListener('click', () => lightbox.classList.remove('open'));
-  lightbox.addEventListener('click', e => { if (e.target === lightbox) lightbox.classList.remove('open'); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
-
-  document.getElementById('gridBtn').addEventListener('click', () => {
-    isListView = false;
-    gallery.classList.remove('list-view');
-    document.getElementById('gridBtn').classList.add('active');
-    document.getElementById('listBtn').classList.remove('active');
-  });
-  document.getElementById('listBtn').addEventListener('click', () => {
-    isListView = true;
-    gallery.classList.add('list-view');
-    document.getElementById('listBtn').classList.add('active');
-    document.getElementById('gridBtn').classList.remove('active');
-  });
-
-  async function processFiles(files) {
-    const toProcess = Array.from(files).filter(f => f.type.startsWith('image/'));
-    if (!toProcess.length) return;
-
-    for (const file of toProcess) {
-      try {
-        // 1. Pedir URL prefirmada al backend
-        const res = await fetch(`/api/presign?filename=${encodeURIComponent(file.name)}&contentType=${encodeURIComponent(file.type)}`);
-        const { url, key } = await res.json();
-
-        // 2. Subir imagen directo a S3
-        await fetch(url, { method: 'PUT', body: file, headers: { 'Content-Type': file.type } });
-
-        console.log('✅ Imagen subida a S3:', key);
-      } catch (err) {
-        console.error('Error subiendo imagen:', err);
-      }
-    }
-    // 3. Recargar galería desde S3
-    await loadImages();
-  }
-
-  dropArea.addEventListener('click', () => fileInput.click());
-  fileInput.addEventListener('change', e => processFiles(e.target.files));
-  dropArea.addEventListener('dragover', e => { e.preventDefault(); dropArea.classList.add('dragover'); });
-  dropArea.addEventListener('dragleave', () => dropArea.classList.remove('dragover'));
-  dropArea.addEventListener('drop', e => {
-    e.preventDefault();
-    dropArea.classList.remove('dragover');
-    processFiles(e.dataTransfer.files);
-  });
-
-  loadImages();
-
-  // Mostrar usuario en header
+  // Mostrar usuario activo desde la sesión
   const session = getSession();
   if (session) {
     const badge = document.getElementById("userBadge");
-    if (badge) badge.textContent = session.role === "admin" ? "👑 " + session.name : "👤 " + session.name;
+    if (badge) {
+      badge.textContent = session.role === "admin" ? "👑 " + session.name : "👤 " + session.name;
+    }
   }
 </script>
 </body>
